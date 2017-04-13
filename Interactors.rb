@@ -3,20 +3,14 @@ require 'digest/sha1'
 module Memoize
 	attr :lookup
 
-#	def initialize
-#		puts "Initializing lookup table"
-#		@lookup = {}
-#	end
-
 	def call(*args)
-		puts "Entering lookup"
-
-		# had a hard time getting initialize to work
 		if @lookup.nil?
 			@lookup = {}
 		end
 
 		stringified_args = args.join(" ")
+
+		puts "Looking up " + stringified_args
 
 		val = @lookup[stringified_args]
 		if val.nil?
@@ -30,7 +24,6 @@ module Memoize
 end
 
 module Interactors
-
 
 	class ImportantThing
 
@@ -49,6 +42,8 @@ i = Interactors::ImportantThing.new
 
 i.extend(Memoize)
 
-puts i.call(["foo", "bar", "bat"])
-puts i.call(["foo", "bar", "bat"])
-puts i.call(["foo", "bar", "baz"])
+puts i.call("foo", "bar", "bat")
+puts i.call("foo", "bar", "bat")
+puts i.call("foo", "bar", "baz")
+puts i.call("foo", "bar", 3)
+puts i.call("foo", "bar", 3)
